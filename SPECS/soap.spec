@@ -52,9 +52,9 @@ getent passwd %{username}  > /dev/null || \
 mkdir -p %{buildroot}/%{product_home}
 
 %post
-%define service_name /etc/init.d/%{product_name}/
+%define service_name /etc/init.d/%{product_name}
 if [ ! -L %{service_name} ]; then
-  ln -s %{product_home}/etc/init.d/%{product_name}
+  ln -s %{product_home}/etc/init.d/%{product_name} %{service_name}
 fi
 
 %clean
