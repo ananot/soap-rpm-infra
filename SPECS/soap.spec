@@ -7,8 +7,8 @@
 %define product_home /usr/local/java/%{product_name}-%{product_version}
 
 %define username jboss
-%define group jboss
-%define groupId 500
+%define user_group jboss
+%define group_id 500
 
 Name:	    %{product_name}
 Version:	%{product_version}
@@ -30,7 +30,7 @@ Source0:    %{product_name}-%{product_version}.tgz
 #Patch1:     add-node-default-jvm-settings.patch
 #Patch2:	    set-default-jsf-to-1.2.patch
 
-Requires(pre): java-1.6.0-openjdk
+Requires(pre): java-1.7.0-openjdk,java-1.7.0-openjdk-devel
 
 %prep
 %setup -q
@@ -43,7 +43,7 @@ Requires(pre): java-1.6.0-openjdk
 
 %pre
 mkdir -p %{product_home}
-getent group %{group} > /dev/null || groupadd -r %{group} -g %{group_id}
+getent group %{user_group} > /dev/null || groupadd -r %{user_group} -g %{group_id}
 getent passwd %{username}  > /dev/null || \
     useradd -r -g %{group} -d %{product_home} -s /sbin/nologin \
     -c "JBoss  user account" %{username}
