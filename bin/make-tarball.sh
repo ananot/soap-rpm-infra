@@ -5,6 +5,7 @@
 
 if [ -z ${PRODUCT_HOME} ]; then
   echo "Please set PRODUCT_HOME to the JBoss SOA-P foler"
+  exit 1
 fi
 
 readonly SOURCES_TO_TAR="${PRODUCT_HOME}"
