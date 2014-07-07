@@ -52,22 +52,10 @@ getent passwd %{username}  > /dev/null || \
 mkdir -p %{buildroot}/%{product_home}
 
 %post
-
-%define eap_conf_folder /etc/jboss-as/
-mkdir -p %{eap_conf_folder}
-sed -e "s;\(export NODE_ID=\).*$;\1'%{node_id}';g" \
-    -e "s;\(export JBOSS_HOME=\).*$;\1'%{product_home}';g" \
-    -e "s;\(export JBOSS_USER=\).*$;\1'%{username}';g" \
-    %{product_home}/bin/init.d/jboss-as.conf > %{eap_conf_folder}/jboss-as.conf
-
 %define service_name /etc/init.d/%{product_name}/
 if [ ! -L %{service_name} ]; then
-  ln -s %{product_home}/bin/init.d/jboss-as-standalone.sh %{service_name}
+  ln -s %{product_home}/etc/init.d/%{product_name}
 fi
-
-%define product_data_dir /var/run/%{product_name}/
-mkdir -p %{product_data_dir}
-chown -R %{username}:%{username} %{product_data_dir}
 
 %clean
 exit 0
