@@ -50,6 +50,7 @@ getent passwd %{username}  > /dev/null || \
 
 %install
 mkdir -p %{buildroot}/%{product_home}
+cp -rp %{_builddir}/%{name}-%{version}/* %{buildroot}/%{product_home}
 
 %post
 %define service_name /etc/init.d/%{product_name}/
