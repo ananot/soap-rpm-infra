@@ -4,7 +4,8 @@
 %define product_version 5.3.1
 
 %define product_name jboss-soap
-%define product_home /usr/local/java/%{product_name}-%{product_version}
+%define product_home /usr/share/%{product_name}-%{product_version}
+%define service_home /usr/share/jboss-soap
 
 %define username jboss
 %define user_group jboss
@@ -20,7 +21,7 @@ License:	GPL
 URL:        http://access.redhat.com/
 
 Packager:   Romain Pelisse
-BuildArch:  noarch
+BuildArch:  x86_64
 
 Source0:    %{product_name}-%{product_version}.tgz
 #Source1:    postgres.tgz
@@ -45,14 +46,24 @@ Requires(pre): java-1.7.0-openjdk,java-1.7.0-openjdk-devel
 mkdir -p %{product_home}
 getent group %{user_group} > /dev/null || groupadd -r %{user_group} -g %{group_id}
 getent passwd %{username}  > /dev/null || \
-    useradd -r -g %{group} -d %{product_home} -s /sbin/nologin \
+    useradd -r -g %{user_group} -d %{product_home} -s /sbin/nologin \
     -c "JBoss  user account" %{username}
 
 %install
 mkdir -p %{buildroot}/%{product_home}
-cp -rp %{_builddir}/%{name}-%{version}/* %{buildroot}/%{product_home}
+cp -Rp %{_builddir}/%{product_name}-%{version}/* %{buildroot}/%{product_home}
 
 %post
+
+if [ ! -L %{service_home} ]; then
+  ln -s %{product_home} %{service_home}
+fi
+
+if [ ! -e %{product_home}/etc/init.d/%{product_name} ]; then
+  echo 'No such file [%{product_home}/etc/init.d/%{product_name}] - faulty install, aborting...'
+  exit 1
+fi
+
 %define service_name /etc/init.d/%{product_name}
 if [ ! -L %{service_name} ]; then
   ln -s %{product_home}/etc/init.d/%{product_name} %{service_name}
@@ -64,7 +75,7 @@ exit 0
 %description
 
 %files
-%defattr(-,%{username},%{group})
+%defattr(-,%{username},%{user_group})
 %{product_home}
 
 %doc
