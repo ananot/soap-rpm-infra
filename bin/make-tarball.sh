@@ -2,11 +2,17 @@
 #
 #
 
-readonly SOURCES_TO_TAR="${HOME}/jboss-eap-6.0.1/
-${HOME}/postgres/
-${HOME}/jboss-patches/"
+
+if [ -z ${PRODUCT_HOME} ]; then
+  echo "Please set PRODUCT_HOME to the JBoss SOA-P foler"
+fi
+
+readonly SOURCES_TO_TAR="${PRODUCT_HOME}"
+#${HOME}/postgres/
+#${HOME}/jboss-patches/"
 
 readonly SOURCES_FOLDER=${SOURCES_FOLDER:-'SOURCES'}
+mkdir -p "${SOURCES_FOLDER}"
 
 readonly TAR_CMD=${TAR_CMD:-'tar'}
 
@@ -53,6 +59,6 @@ sanity_check ${TAR_CMD}
 set -e
 
 for target in ${SOURCES_TO_TAR}
-do 
+do
   make_tarball "${target}" "$(basename ${target})" "${SOURCES_FOLDER}"
 done

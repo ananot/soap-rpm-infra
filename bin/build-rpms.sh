@@ -5,6 +5,8 @@
 # External global variables - can be tweak or overridden by user
 readonly SPECS_FOLDER=${SPECS_FOLDER:-'./SPECS'}
 
+readonly SPEC_NAME_PATTERN=${SPEC_NAME_PATTERN:-'*'}
+
 # Internal global variables
 
 readonly RPMBUILD_CMD=${RPMBUILD_CMD:-'rpmbuild'}
@@ -37,7 +39,7 @@ sanity_check ${RPMBUILD_CMD}
 
 
 echo "Building RPMS from each jdg* SPECS in ${SPECS_FOLDER}/"
-for specfile in ${SPECS_FOLDER}/jdg*
+for specfile in ${SPECS_FOLDER}/${SPEC_NAME_PATTERN}*
 do
   build_rpm "${specfile}"
 done
