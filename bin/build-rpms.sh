@@ -37,17 +37,9 @@ build_rpm() {
 
 sanity_check ${RPMBUILD_CMD}
 
-
-echo "Building RPMS from each jdg* SPECS in ${SPECS_FOLDER}/"
+echo "Building RPMS from each *.spec file in ${SPECS_FOLDER}/"
 for specfile in ${SPECS_FOLDER}/${SPEC_NAME_PATTERN}*
 do
   build_rpm "${specfile}"
 done
 echo ''
-
-if  [ -e ${SPECS_FOLDER}/jon-*.rpm ] ; then
-  echo "Builidng RPM for JBoss Network Operation"
-  build_rpm ${SPECS_FOLDER}/jon-*.rpm
-  echo "RPM build for JON finished."
-  echo ''
-fi

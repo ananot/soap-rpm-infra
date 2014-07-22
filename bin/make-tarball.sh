@@ -1,7 +1,4 @@
 #!/bin/bash
-#
-#
-
 
 if [ -z ${PRODUCT_HOME} ]; then
   echo "Please set PRODUCT_HOME to the JBoss SOA-P foler"
