@@ -56,10 +56,6 @@ if [ ! -L %{service_name} ]; then
   ln -s %{product_home}/etc/init.d/%{product_name} %{service_name}
 fi
 
-%preun
-if [ ! -L %{service_name} ]; then
-  service %{service_name} stop
-fi
 
 %clean
 exit 0
